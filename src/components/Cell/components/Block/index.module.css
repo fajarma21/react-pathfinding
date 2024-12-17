@@ -1,0 +1,58 @@
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.blockWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: scale(0);
+  animation: pop 200ms ease-out var(--delay) 1 forwards;
+}
+
+.side {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.top {
+  transform: translateZ(25px);
+  background-color: #0b6a2b;
+}
+
+.left {
+  width: 25px;
+  transform-origin: left;
+  transform: rotateY(90deg) translateX(-25px);
+  background-color: #074c1e;
+}
+
+.right {
+  left: unset;
+  right: 0;
+  width: 25px;
+  transform-origin: right;
+  transform: rotateY(-90deg) translateX(25px);
+  background-color: #074c1e;
+}
+
+.front {
+  top: unset;
+  bottom: 0;
+  height: 25px;
+  transform-origin: bottom;
+  transform: rotateX(-90deg);
+  background-color: #074c1e;
+}

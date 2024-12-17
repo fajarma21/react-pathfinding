@@ -1,0 +1,22 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 8px;
+}
+
+.filledRow {
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.actionWrapper {
+  margin-left: auto;
+}
+
+.radioTile {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}

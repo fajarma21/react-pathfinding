@@ -1,0 +1,44 @@
+.start {
+  transform: scale(1);
+  background-color: #c09636;
+}
+.start::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #8d6b1d;
+}
+
+.goal {
+  transform: scale(1);
+  background-color: white;
+}
+
+.goal::before,
+.goal::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background-color: #323232;
+}
+
+.goal::before {
+  top: 0;
+  left: 0;
+}
+
+.goal::after {
+  bottom: 0;
+  right: 0;
+}
+
+.block {
+  transform: scale(1);
+  background-color: #074c1e;
+}

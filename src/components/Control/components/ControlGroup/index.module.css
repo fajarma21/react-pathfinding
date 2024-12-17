@@ -1,0 +1,17 @@
+.controlGroup:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.groupTitle {
+  margin: 0 0 8px;
+  color: white;
+  font-weight: normal;
+}
+
+.groupContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,40 @@
+.checkbox {
+  all: unset;
+}
+
+.checkbox label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 4px;
+  transition: background-color 200ms;
+}
+
+.checkbox .dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: white;
+}
+
+.checkbox input[type="checkbox"]:checked + label {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.checkbox input[type="checkbox"]:checked + label .dot {
+  background-color: rgb(55, 192, 94);
+}
+
+.checkbox:disabled,
+.checkbox:disabled * {
+  cursor: not-allowed;
+}
+
+.checkbox:disabled * {
+  background-color: gray;
+}

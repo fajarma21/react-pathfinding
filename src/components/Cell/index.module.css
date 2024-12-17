@@ -1,0 +1,46 @@
+@keyframes show {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.cell {
+  all: unset;
+  position: relative;
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  color: #073b4c;
+  background-color: rgb(55, 192, 94);
+  transform-style: preserve-3d;
+}
+
+.cell:focus-visible {
+  background-color: rgba(179, 245, 255, 0.2);
+}
+
+.innerCell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transform: scale(0);
+  will-change: transform;
+  animation: show 200ms ease-out var(--delay) 1 forwards;
+}
+
+.isOpened {
+  background-color: rgb(38, 168, 75);
+}
+
+.isChecked {
+  background-color: rgb(25, 143, 58);
+}
+
+.isPath {
+  background-color: #ffd166;
+}
