@@ -18,5 +18,6 @@ export interface CellProps {
   isChecked?: boolean;
   isOpened?: boolean;
   isPath?: boolean;
+  size: number;
   onClick: () => void;
 }

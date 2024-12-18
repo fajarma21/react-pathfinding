@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { COL, ROW } from "@/constants";
 import Grid from "@/components/Grid";
 import css from "./index.module.css";
@@ -8,6 +8,8 @@ import type { GridValue } from "@/types";
 
 const Main = () => {
   const [gridValue, setGridValue] = useState<GridValue[][]>();
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleResetGrid = () => {
     const arr = [];
@@ -38,9 +40,14 @@ const Main = () => {
   }, [gridValue]);
 
   return (
-    <div className={css.container}>
+    <div ref={containerRef} className={css.container}>
       <h1 className={css.title}>A* Pathfinding</h1>
-      {gridValue && <Grid grid={gridValue} />}
+      {containerRef.current && gridValue && (
+        <Grid
+          grid={gridValue}
+          cellSize={containerRef.current.offsetWidth / COL}
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { CellCoordinate, GridValue } from "@/types";
 
 export interface GridProps {
   grid: GridValue[][];
+  cellSize: number;
 }
 
 export interface GetCostParams {

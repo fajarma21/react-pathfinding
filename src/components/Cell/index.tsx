@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
 import classNames from "classnames";
 
+import { CELL_SIZE } from "@/constants";
 import parentCss from "@/styles/index.module.css";
 import Block from "./components/Block";
 import css from "./index.module.css";
@@ -11,13 +12,19 @@ const Cell = ({
   isStart = false,
   isGoal = false,
   isBlocked = false,
+  size = CELL_SIZE,
   onClick,
 }: CellProps) => {
   return (
     <button
       type="button"
       className={css.cell}
-      style={{ "--delay": "0ms" } as CSSProperties}
+      style={
+        {
+          "--delay": "0ms",
+          "--size": `${size > CELL_SIZE ? CELL_SIZE : size}px`,
+        } as CSSProperties
+      }
       onClick={onClick}
     >
       {indexes.open > 0 && (

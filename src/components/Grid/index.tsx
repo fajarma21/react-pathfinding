@@ -15,7 +15,7 @@ import {
 import css from "./index.module.css";
 import { GridProps } from "./index.types";
 
-const Grid = ({ grid }: GridProps) => {
+const Grid = ({ cellSize, grid }: GridProps) => {
   const [cellType, setCellType] = useState(1);
   const [diagobal, setDiagobal] = useState(false);
   const [startCell, setStartCell] = useState<GridValue>(CELL_DEFAULT);
@@ -76,8 +76,8 @@ const Grid = ({ grid }: GridProps) => {
     }
 
     if (tempFinished) {
-      let tempPath = [];
-      let pathIndex = [];
+      const tempPath: GridValue[] = [];
+      const pathIndex: number[] = [];
       let currPath = tempCheckedList[tempCheckedList.length - 1];
       while (currPath.source) {
         const currSource = currPath.source;
@@ -232,6 +232,7 @@ const Grid = ({ grid }: GridProps) => {
                   <Cell
                     key={`${indexRow} - ${indexCol}`}
                     {...col}
+                    size={cellSize}
                     indexes={isPath ? isPath.indexes : indexes}
                     gCost={gCost}
                     hCost={hCost}
@@ -252,6 +253,7 @@ const Grid = ({ grid }: GridProps) => {
           ))}
         </div>
       </div>
+
       <Control
         cellType={cellType}
         diagonal={diagobal}

@@ -20,3 +20,5 @@ export const CELL_TYPES = [
   { value: 2, text: "Goal" },
   { value: 3, text: "Block" },
 ];
+
+export const CELL_SIZE = 50;
