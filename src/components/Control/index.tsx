@@ -24,7 +24,7 @@ const Control = ({
     <>
       <div className={css.row}>
         <div>
-          <ControlGroup title="Tiles">
+          <ControlGroup title="Add">
             {CELL_TYPES.map((item, index) => (
               <RaidoBtn
                 key={`radio-${index}`}
