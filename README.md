@@ -17,8 +17,8 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Next
-[x] Mobile friendly
-[] Enable diagonal & fix algorithm implementaion
-[] Improve types definition
-[] Custom row & column
-[] Different tile with different cost
+- [x] Mobile friendly
+- [ ] Enable diagonal & fix algorithm implementaion
+- [ ] Improve types definition
+- [ ] Custom row & column
+- [ ] Different tile with different cost
