@@ -38,10 +38,10 @@ const Main = () => {
   }, [gridValue]);
 
   return (
-    <>
+    <div className={css.container}>
       <h1 className={css.title}>A* Pathfinding</h1>
       {gridValue && <Grid grid={gridValue} />}
-    </>
+    </div>
   );
 };
 
