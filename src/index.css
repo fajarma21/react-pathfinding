@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'DynaPuff';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: local('DynaPuff'),
+    url(https://fonts.gstatic.com/l/font?kit=z7NKdRvsZDIVHbYPMhZJ3HQ83UaSu4uhr7-DG8juSp2ikiA-e-9f-rz0eyQB40RTF78tchY_vUg4dX-VSqJEfyKn2Vo_UUcW8d4ZrSYvBe0U5zGEMIA-dQ6BBvzN_KfvIobtBQ&skey=fa2f3858d8ed1047&v=v4)
+      format('woff2');
+}
+@font-face {
+  font-family: 'DynaPuff';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: local('DynaPuff'),
+    url(https://fonts.gstatic.com/l/font?kit=z7NKdRvsZDIVHbYPMhZJ3HQ83UaSu4uhr7-DG8juSp2ikiA-e-9f-rz0eyQB40RTF78tchY_vUg4dX-VSqJEfyKn2Vo_UUcW8d4ZrSYvBe0U5zGEMIA-dQ6BBvzN_KfvIobtBQ&skey=fa2f3858d8ed1047&v=v4)
+      format('woff2');
+}
+
+:root {
+  font-family: 'DynaPuff', system-ui;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: rgb(55 108 192);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
