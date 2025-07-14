@@ -18,6 +18,7 @@ export const filledRow = css`
 
 export const actionWrapper = css`
   flex: none;
+  margin-left: auto;
   @media only screen and (max-width: 639px) {
     position: fixed;
     bottom: 0;
