@@ -9,7 +9,7 @@ const Options = () => {
   const toggleShowCost = useOptions((state) => state.toggleShowCost);
 
   return (
-    <Section horizontal gap={24} title="Options">
+    <Section horizontal underline gap={24} title="Options">
       <Checkbox
         label="Show Tile Cost"
         id="show-cost"

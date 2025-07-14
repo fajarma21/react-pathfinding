@@ -3,6 +3,10 @@ import { css } from '@emotion/css';
 export const section = css`
   position: relative;
   margin-bottom: 32px;
+
+  @media only screen and (max-width: 639px) {
+    margin-bottom: 150px;
+  }
 `;
 
 export const container = css`

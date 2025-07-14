@@ -18,7 +18,17 @@ export const filledRow = css`
 
 export const actionWrapper = css`
   flex: none;
-  @media only screen and (min-width: 640px) {
-    margin-left: auto;
+  @media only screen and (max-width: 639px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 16px;
+    background-color: #477dd2;
+    z-index: 1;
+
+    button {
+      width: calc(50% - 28px);
+    }
   }
 `;

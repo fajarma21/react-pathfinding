@@ -5,5 +5,6 @@ export interface SectionProps {
   className?: string;
   gap?: number;
   horizontal?: boolean;
+  underline?: boolean;
   title: string;
 }

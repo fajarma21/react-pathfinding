@@ -1,9 +1,11 @@
 import { css } from '@emotion/css';
 
 export const section = css`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 8px;
-  margin-bottom: 16px;
+  &[data-underline] {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
 `;
 
 export const sectionTitle = css`

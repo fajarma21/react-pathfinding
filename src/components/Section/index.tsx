@@ -10,9 +10,13 @@ const Section = ({
   title,
   children,
   className,
+  underline,
 }: SectionProps) => {
   return (
-    <section className={cx(css.section, className)}>
+    <section
+      className={cx(css.section, className)}
+      data-underline={underline || undefined}
+    >
       <h3 className={css.sectionTitle}>{title}</h3>
       <div
         className={cx({ [css.sectionHorizontal]: horizontal })}

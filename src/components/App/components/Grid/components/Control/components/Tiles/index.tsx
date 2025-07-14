@@ -33,7 +33,7 @@ const Tiles = ({ onClickGenerate }: TilesProps) => {
 
   return (
     <>
-      <Section horizontal title="Tile Type">
+      <Section horizontal underline title="Tile Type">
         {cellList.map((item, index) => (
           <TileBtn
             key={`radio-${index}`}
