@@ -13,8 +13,10 @@
     "@emotion/css": "^11.13.5",
     "dayjs": "^1.11.13",
     "fajarma-package": "^1.0.2",
+    "fajarma-react-lib": "^1.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

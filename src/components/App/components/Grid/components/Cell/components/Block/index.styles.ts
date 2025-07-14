@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/css';
 
-const pop = keyframes`
-to {
+const popup = keyframes`
+  100% {
     transform: scale(1);
   }
 `;
@@ -15,7 +15,7 @@ export const blockWrapper = css`
   transform-style: preserve-3d;
   will-change: transform;
   transform: scale(0);
-  animation: ${pop} 200ms ease-out var(--delay) 1 forwards;
+  animation: ${popup} 200ms ease-out var(--delay, 0ms) 1 forwards;
 `;
 
 export const side = css`
@@ -29,6 +29,9 @@ export const side = css`
 export const top = css`
   transform: translateZ(25px);
   background-color: #0b6a2b;
+  &:hover {
+    background-color: #0e7831;
+  }
 `;
 
 export const left = css`

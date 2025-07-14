@@ -1,35 +1,29 @@
-import { useEffect, useState } from 'react';
+import type { GridValue, HistoryList } from '@/types';
 import getLS from 'fajarma-package/dist/storage/getLS';
 import setLS from 'fajarma-package/dist/storage/setLS';
-import { HistoryData, HistoryList } from '@/types';
+import { useEffect, useState } from 'react';
 
-import { UseHistoryParams } from './index.types';
 import { LS_HISTORY } from './index.constants';
 
-const useHistory = ({ block, goal, start }: UseHistoryParams) => {
+const useHistory = (cells: GridValue[]) => {
   const [selectedHistory, setSelectedHistory] = useState<number>(0);
   const [historyList, setHistoryList] = useState<HistoryList[]>([]);
 
-  const handleAddHistory = (data?: HistoryData) => {
+  const handleAddHistory = (data?: GridValue[]) => {
     const dateNumber = new Date().getTime();
 
     setSelectedHistory(dateNumber);
 
-    const newData = data || {
-      block,
-      goal,
-      start,
-    };
+    const newData = data || cells;
 
     const validData = {
       dateNumber: dateNumber,
-      ...newData,
+      cells: newData,
     };
 
-    setHistoryList((prev) => [validData, ...prev]);
-
-    const prevLS = getLS<HistoryList[]>(LS_HISTORY) || [];
-    setLS(LS_HISTORY, [validData, ...prevLS]);
+    const newHistoryList = [validData, ...historyList];
+    setHistoryList(newHistoryList);
+    setLS(LS_HISTORY, newHistoryList);
   };
 
   const handleDeleteHistory = (dateNumber: number) => {
@@ -42,8 +36,8 @@ const useHistory = ({ block, goal, start }: UseHistoryParams) => {
   };
 
   useEffect(() => {
-    const history_ls = getLS<HistoryList[]>(LS_HISTORY) || [];
-    setHistoryList(history_ls);
+    const historyLs = getLS<HistoryList[]>(LS_HISTORY) || [];
+    setHistoryList(historyLs);
   }, []);
 
   return {

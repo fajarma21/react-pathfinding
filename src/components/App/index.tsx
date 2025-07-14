@@ -1,19 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
 import { COL } from '@/constants';
 import type { GridValue } from '@/types';
+import { useEffect, useRef, useState } from 'react';
 
-import { initGrid } from './index.helpers';
 import Grid from './components/Grid';
+import { initGrid } from './index.helpers';
 import * as css from './index.styles';
+
+// TODO: fixing note
 
 const App = () => {
   const [gridValue, setGridValue] = useState<GridValue[][]>();
-
+  const resetValue = useRef<GridValue[][]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleResetGrid = () => {
-    const arr = initGrid();
-    setGridValue(arr);
+    const reset = resetValue.current.length ? resetValue.current : initGrid();
+    setGridValue(reset);
   };
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const App = () => {
 
   return (
     <div ref={containerRef} className={css.container}>
-      <h1 className={css.title}>A* Pathfinding</h1>
+      <h1 className={css.title}>Pathfinding</h1>
       {containerRef.current && gridValue && (
         <Grid
           grid={gridValue}

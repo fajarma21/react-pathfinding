@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 
 export interface SectionProps {
   children: ReactNode;
-  classname?: string;
+  className?: string;
+  gap?: number;
+  horizontal?: boolean;
   title: string;
 }

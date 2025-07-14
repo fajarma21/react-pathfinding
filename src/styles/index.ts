@@ -43,3 +43,17 @@ export const block = css`
   transform: scale(1);
   background-color: #074c1e;
 `;
+
+export const cells = css`
+  &-start {
+    ${start};
+  }
+
+  &-goal {
+    ${goal}
+  }
+
+  &-block {
+    ${block}
+  }
+`;

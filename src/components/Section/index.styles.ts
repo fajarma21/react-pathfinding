@@ -1,11 +1,9 @@
 import { css } from '@emotion/css';
 
 export const section = css`
-  &:not(:last-child) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-  }
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
 `;
 
 export const sectionTitle = css`
@@ -14,8 +12,9 @@ export const sectionTitle = css`
   font-weight: normal;
 `;
 
-export const sectionContent = css`
+export const sectionHorizontal = css`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--hGap);
+  flex-wrap: wrap;
 `;

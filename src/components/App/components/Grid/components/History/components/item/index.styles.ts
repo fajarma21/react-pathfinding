@@ -9,6 +9,10 @@ export const list = css`
 
   button {
     display: none;
+    span {
+      display: inline-block;
+      margin-right: 4px;
+    }
   }
 
   &:hover,
@@ -20,6 +24,26 @@ export const list = css`
     button {
       display: flex;
     }
+  }
+
+  @media (max-width: 400px) {
+    height: 60px;
+  }
+
+  @media (max-width: 768px) {
+    button {
+      display: unset;
+      span {
+        display: none;
+      }
+    }
+  }
+`;
+
+export const text = css`
+  margin: 0;
+  @media (max-width: 400px) {
+    width: 120px;
   }
 `;
 

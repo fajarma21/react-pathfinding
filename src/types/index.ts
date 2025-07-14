@@ -4,27 +4,32 @@ export interface CellCoordinate {
 }
 
 export interface GridValue extends CellCoordinate {
-  fCost: number;
-  hCost: number;
-  data: {
+  color?: string;
+  cost: number;
+  counter: {
     open: number;
     check: number;
     path: number;
   };
+  fCost: number;
+  hCost: number;
   gCost: number;
   source?: GridValue;
   status: number;
-}
-
-export interface HistoryData {
-  block: GridValue[];
-  goal: GridValue;
-  start: GridValue;
+  value: string;
+  type: number;
 }
 
 export interface HistoryList {
   dateNumber: number;
-  block: GridValue[];
-  goal: GridValue;
-  start: GridValue;
+  cells: GridValue[];
+}
+
+export interface CellTypeData {
+  color?: string;
+  cost: number;
+  multiple?: boolean;
+  text: string;
+  type: number;
+  value: string;
 }

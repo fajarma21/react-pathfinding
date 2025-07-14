@@ -1,38 +1,47 @@
 import { useState } from 'react';
 
-import {
-  CELL_BLOCK,
-  CELL_DEFAULT,
-  CELL_GOAL,
-  CELL_START,
-  COL,
-  ROW,
-} from '@/constants';
+import { CELL_TYPE_GOAL, CELL_TYPE_START } from '@/constants';
 import useHistory from '@/hooks/useHistory';
-import { GridValue, HistoryList } from '@/types';
+import useCustomCell from '@/stores/useCustomCell';
+import useOptions from '@/stores/useOptions';
+import { type GridValue, type HistoryList } from '@/types';
 
+import useSelectedCell from '@/stores/useSelectedCell';
 import Cell from './components/Cell';
 import Control from './components/Control';
-import { CELL_CHECK, CELL_OPEN } from './index.constants';
+import History from './components/History';
 import {
+  generateCells,
+  getChangedCells,
   getLowestFCost,
   getNeighbors,
-  getRandomCoordinate,
+  groupCells,
 } from './index.helpers';
 import * as css from './index.styles';
-import { GridProps } from './index.types';
-import History from './components/History';
+import type { GridProps } from './index.types';
 
 const Grid = ({ cellSize, grid }: GridProps) => {
-  const [cellType, setCellType] = useState(1);
-  const [diagonal, setDiagonal] = useState(false);
-  const [startCell, setStartCell] = useState<GridValue>(CELL_DEFAULT);
-  const [goalCell, setGoalCell] = useState<GridValue>(CELL_DEFAULT);
-  const [blockList, setBlockList] = useState<GridValue[]>([]);
+  const selectedCell = useSelectedCell((state) => state.selectedCell);
+  const cellList = useCustomCell((state) => state.cellList);
+  const ignoreCost = useOptions((state) => state.ignoreCost);
+  const showCost = useOptions((state) => state.showCost);
+
+  const [changedCells, setChangedCells] = useState<GridValue[]>([]);
 
   const [openList, setOpenList] = useState<GridValue[]>([]);
   const [checkedList, setCheckedList] = useState<GridValue[]>([]);
   const [path, setPath] = useState<GridValue[]>([]);
+
+  const finished = path.length > 0;
+  const resetDisabled = !(
+    finished ||
+    (!openList.length && Boolean(checkedList.length))
+  );
+  const searchDisabled =
+    finished ||
+    changedCells.filter(
+      (item) => item.type === CELL_TYPE_START || item.type === CELL_TYPE_GOAL
+    ).length < 2;
 
   const {
     historyList,
@@ -40,31 +49,80 @@ const Grid = ({ cellSize, grid }: GridProps) => {
     handleAddHistory,
     handleDeleteHistory,
     setSelectedHistory,
-  } = useHistory({ block: blockList, goal: goalCell, start: startCell });
+  } = useHistory(changedCells);
 
-  const finished = path.length > 0;
+  const handleReset = () => {
+    setOpenList([]);
+    setCheckedList([]);
+    setPath([]);
+  };
+
+  const handleResetAll = () => {
+    handleReset();
+    setChangedCells([]);
+  };
+
+  const handleClickHistory = (value: HistoryList) => {
+    handleResetAll();
+    setSelectedHistory(value.dateNumber);
+    setChangedCells(value.cells);
+  };
+
+  const handleClickCell = (value: GridValue) => {
+    setSelectedHistory(0);
+
+    const newChangedCells = getChangedCells({
+      cells: changedCells,
+      cell: value,
+      newCell: selectedCell,
+    });
+    setChangedCells(newChangedCells);
+
+    handleReset();
+  };
+
+  const handleClickGenerate = () => {
+    handleResetAll();
+
+    const generatedCells = generateCells({
+      cellList,
+      colLen: grid[0].length,
+      rowLen: grid.length,
+    });
+    setChangedCells(generatedCells);
+    handleAddHistory(generatedCells);
+  };
 
   const handleSearch = () => {
     if (!selectedHistory) handleAddHistory();
 
+    const { start, goal, blocks, otherCells } = groupCells(changedCells);
+
+    if (!start || !goal) return;
+
     let count = 0;
-    let tempCurrentCell = startCell;
-    let tempOpenList: GridValue[] = openList;
+    let tempCurrentCell = start;
+    let tempOpenList = openList;
     let tempCheckedList = checkedList;
     let tempFinished;
+
     while (!tempFinished) {
       const neighbors = getNeighbors({
-        blocked: blockList,
-        checked: tempCheckedList,
+        blocks,
         count,
+        checked: tempCheckedList,
         current: tempCurrentCell,
-        goal: goalCell,
-        grid: grid,
-        start: startCell,
+        goal,
+        grid,
+        ignoreCost,
+        otherCells,
+        start,
       });
 
+      if (!neighbors) break;
+
       if (neighbors.length) {
-        count = neighbors[neighbors.length - 1].data.open;
+        count = neighbors[neighbors.length - 1].counter.open;
         tempOpenList = [...tempOpenList, ...neighbors];
       }
 
@@ -74,8 +132,8 @@ const Grid = ({ cellSize, grid }: GridProps) => {
         count += 1;
         const modifiedLowestCell = {
           ...lowestCell,
-          data: {
-            ...lowestCell.data,
+          counter: {
+            ...lowestCell.counter,
             check: count,
           },
         };
@@ -89,7 +147,7 @@ const Grid = ({ cellSize, grid }: GridProps) => {
 
         tempCurrentCell = modifiedLowestCell;
         tempFinished =
-          tempCurrentCell.x === goalCell.x && tempCurrentCell.y === goalCell.y;
+          tempCurrentCell.x === goal.x && tempCurrentCell.y === goal.y;
       } else break;
     }
 
@@ -112,8 +170,8 @@ const Grid = ({ cellSize, grid }: GridProps) => {
             ...prev,
             {
               ...curr,
-              data: {
-                ...curr.data,
+              counter: {
+                ...curr.counter,
                 path: pathIndex[pathIndex.length - (prev.length + 1)],
               },
             },
@@ -121,7 +179,6 @@ const Grid = ({ cellSize, grid }: GridProps) => {
         },
         []
       );
-
       setPath(reversedPath);
     }
 
@@ -129,156 +186,33 @@ const Grid = ({ cellSize, grid }: GridProps) => {
     setOpenList(tempOpenList);
   };
 
-  const handleReset = () => {
-    setOpenList([]);
-    setCheckedList([]);
-    setPath([]);
-  };
-
-  const handleResetAll = () => {
-    setStartCell(CELL_DEFAULT);
-    setGoalCell(CELL_DEFAULT);
-    setBlockList([]);
-    setOpenList([]);
-    setCheckedList([]);
-    setPath([]);
-  };
-
-  const handleClickCell = (value: GridValue) => {
-    setSelectedHistory(0);
-
-    const isBlock = blockList.find(
-      (item) => item.x === value.x && item.y === value.y
-    );
-    const isStart = startCell.x === value.x && startCell.y === value.y;
-    const isGoal = goalCell.x === value.x && goalCell.y === value.y;
-
-    if (isBlock) {
-      setBlockList((prev) =>
-        prev.filter((item) => !(item.x === value.x && item.y === value.y))
-      );
-    } else if (cellType === CELL_START) {
-      if (!isGoal) setStartCell(value);
-    } else if (cellType === CELL_GOAL) {
-      if (!isStart) setGoalCell(value);
-    } else {
-      if (!isStart && !isGoal) setBlockList((prev) => [...prev, value]);
-    }
-    handleReset();
-  };
-
-  const handleClickGenerate = () => {
-    handleResetAll();
-    setCellType(CELL_BLOCK);
-
-    //start
-    const startRandom = {
-      ...CELL_DEFAULT,
-      ...getRandomCoordinate({ maxCol: COL, maxRow: ROW }),
-    };
-    setStartCell(startRandom);
-
-    //goal
-    const goalRandom = {
-      ...CELL_DEFAULT,
-      ...getRandomCoordinate({
-        maxCol: COL,
-        maxRow: ROW,
-        reserved: startRandom,
-      }),
-    };
-    setGoalCell(goalRandom);
-
-    //block
-    const blockRandom: GridValue[] = [];
-    const randomLimit = Math.floor(Math.random() * 5) + 4;
-    for (let i = 0; i < COL; i++) {
-      for (let j = 0; j < ROW; j++) {
-        if (
-          !(i === startRandom.x && j === startRandom.y) &&
-          !(i === goalRandom.x && j === goalRandom.y)
-        ) {
-          const randomValue = Math.floor(Math.random() * 100);
-          if (randomValue > randomLimit * 10) {
-            const blockCell = {
-              ...CELL_DEFAULT,
-              x: i,
-              y: j,
-            };
-            setBlockList((prev) => [...prev, blockCell]);
-            blockRandom.push(blockCell);
-          }
-        }
-      }
-    }
-
-    handleAddHistory({
-      block: blockRandom,
-      goal: goalRandom,
-      start: startRandom,
-    });
-  };
-
-  const handleClickType = (value: number) => {
-    setCellType(value);
-  };
-
-  const handleClickDiagonal = () => {
-    setDiagonal((prev) => !prev);
-  };
-
-  const handleClickHistory = (value: HistoryList) => {
-    handleResetAll();
-    setSelectedHistory(value.dateNumber);
-    setGoalCell(value.goal);
-    setStartCell(value.start);
-    setBlockList(value.block);
-  };
-
   return (
     <div className={css.container}>
       <div className={css.gridWrapper}>
         <div className={css.grid}>
-          {grid.map((row, indexRow) => (
-            <div key={indexRow} className={css.row}>
-              {row.map((col, indexCol) => {
-                const {
-                  gCost = 0,
-                  hCost = 0,
-                  fCost = 0,
-                  data = {
-                    open: 0,
-                    check: 0,
-                    path: 0,
-                  },
-                  status = 0,
-                } = [...openList, ...checkedList].find(
-                  (item) => item.x === col.x && item.y === col.y
-                ) || {};
-                const isChecked = status === CELL_CHECK;
-                const isOpened = status === CELL_OPEN;
-                const isPath =
-                  finished &&
-                  path.find((item) => item.x === col.x && item.y === col.y);
+          {grid.map((row, rowIdx) => (
+            <div key={rowIdx} className={css.row}>
+              {row.map((cell, cellIdx) => {
+                const newCell =
+                  changedCells.find(
+                    (item) => item.x === cell.x && item.y === cell.y
+                  ) || cell;
+                const pathCell = path.find(
+                  (item) => item.x === cell.x && item.y === cell.y
+                );
+                const processedCell = [...openList, ...checkedList].find(
+                  (item) => item.x === cell.x && item.y === cell.y
+                );
 
+                const counterCell = pathCell || processedCell || newCell;
                 return (
                   <Cell
-                    key={`${indexRow} - ${indexCol}`}
-                    {...col}
+                    key={`${rowIdx}-${cellIdx}`}
+                    data={{ ...newCell, counter: counterCell.counter }}
+                    ignoreCost={ignoreCost}
                     size={cellSize}
-                    data={isPath ? isPath.data : data}
-                    gCost={gCost}
-                    hCost={hCost}
-                    fCost={fCost}
-                    isBlock={blockList.some(
-                      (item) => item.x === col.x && item.y === col.y
-                    )}
-                    isChecked={isChecked}
-                    isOpened={isOpened}
-                    isStart={col.x === startCell.x && col.y === startCell.y}
-                    isGoal={col.x === goalCell.x && col.y === goalCell.y}
-                    isPath={Boolean(isPath)}
-                    onClick={() => handleClickCell(col)}
+                    showCost={showCost}
+                    onClick={() => handleClickCell(newCell)}
                   />
                 );
               })}
@@ -288,21 +222,11 @@ const Grid = ({ cellSize, grid }: GridProps) => {
       </div>
 
       <Control
-        cellType={cellType}
-        diagonal={diagonal}
-        resetDisabled={
-          !(finished || (!openList.length && Boolean(checkedList.length)))
-        }
-        searchDisabled={
-          finished ||
-          startCell.x + startCell.y < 0 ||
-          goalCell.x + goalCell.y < 0
-        }
-        onClickDiagonal={handleClickDiagonal}
+        resetDisabled={resetDisabled}
+        searchDisabled={searchDisabled}
         onClickGenerate={handleClickGenerate}
         onClickReset={handleReset}
         onClickSearch={handleSearch}
-        onClickType={handleClickType}
       />
 
       {historyList.length > 0 && (

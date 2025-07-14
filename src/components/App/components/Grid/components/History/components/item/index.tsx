@@ -5,14 +5,14 @@ import { ItemProps } from './index.types';
 const Item = ({ children, isActive, onClick, onDelete }: ItemProps) => {
   return (
     <li className={css.list} data-active={isActive || undefined}>
-      {children}
+      <p className={css.text}>{children}</p>
       <div className={css.btnContainer}>
         <Button color="red" onClick={onDelete}>
           x
         </Button>
         {!isActive && (
           <Button color="orange" onClick={onClick}>
-            Restore &gt;
+            <span>Restore</span>&gt;
           </Button>
         )}
       </div>
