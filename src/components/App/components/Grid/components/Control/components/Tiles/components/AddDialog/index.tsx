@@ -55,6 +55,7 @@ const AddDialog = ({
         <form ref={formRef} onSubmit={handleSubmitForm}>
           <TextInput
             required
+            autoFocus
             type="text"
             id="name"
             placeholder="Tile name"
