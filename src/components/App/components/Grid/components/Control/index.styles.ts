@@ -4,7 +4,7 @@ export const row = css`
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 8px;
+  gap: 32px;
   margin: 8px 0;
   @media only screen and (min-width: 640px) {
     flex-direction: row;

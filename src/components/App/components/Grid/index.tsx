@@ -10,6 +10,7 @@ import useSelectedCell from '@/stores/useSelectedCell';
 import Cell from './components/Cell';
 import Control from './components/Control';
 import History from './components/History';
+import Ticker from '@/components/Ticker';
 import {
   generateCells,
   getChangedCells,
@@ -220,6 +221,8 @@ const Grid = ({ cellSize, grid }: GridProps) => {
           ))}
         </div>
       </div>
+
+      <Ticker>Under development</Ticker>
 
       <Control
         resetDisabled={resetDisabled}

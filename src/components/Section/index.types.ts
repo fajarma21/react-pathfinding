@@ -7,4 +7,5 @@ export interface SectionProps {
   horizontal?: boolean;
   underline?: boolean;
   title: string;
+  subTitle?: string;
 }

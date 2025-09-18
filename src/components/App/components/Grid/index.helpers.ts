@@ -106,6 +106,8 @@ const countCost = ({ cell, ignoreCost, target, others }: CountCostParams) => {
     let costX = findCellCost({ x: cell.x, y: cell.y, others });
     let costY = findCellCost({ x: cell.x, y: cell.y, others });
 
+    if (costX + costY === 0) return 0;
+
     let newY = target.y;
     for (let x = 1; x <= costXDiff; x++) {
       const newX = cell.x > target.x ? cell.x - x : cell.x + x;
@@ -164,6 +166,7 @@ export const getNeighbors = ({
         const isChecked = checked.find(
           (item) => item.x === col.x && item.y === col.y
         );
+
         if (!isStart && !isBlocked && !isChecked) {
           const costs = getCost({
             cell: col,
@@ -173,18 +176,20 @@ export const getNeighbors = ({
             others: otherCells,
           });
 
-          const value = {
-            ...col,
-            ...costs,
-            source: current,
-            status: CELL_OPEN,
-            counter: {
-              ...col.counter,
-              open: count + tempNeighbors.length + 1,
-            },
-          };
+          if (costs.fCost) {
+            const value = {
+              ...col,
+              ...costs,
+              source: current,
+              status: CELL_OPEN,
+              counter: {
+                ...col.counter,
+                open: count + tempNeighbors.length + 1,
+              },
+            };
 
-          tempNeighbors.push(value);
+            tempNeighbors.push(value);
+          }
         }
       }
     }

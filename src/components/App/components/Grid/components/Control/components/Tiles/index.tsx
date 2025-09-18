@@ -33,7 +33,12 @@ const Tiles = ({ onClickGenerate }: TilesProps) => {
 
   return (
     <>
-      <Section horizontal underline title="Tile Type">
+      <Section
+        horizontal
+        underline
+        title="Tile Type"
+        subTitle={`Tile cost: ${selectedCell.cost || 'impassable'}`}
+      >
         {cellList.map((item, index) => (
           <TileBtn
             key={`radio-${index}`}

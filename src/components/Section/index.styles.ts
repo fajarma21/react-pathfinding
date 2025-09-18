@@ -8,8 +8,15 @@ export const section = css`
   }
 `;
 
+export const head = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+`;
+
 export const sectionTitle = css`
-  margin: 0 0 8px;
+  margin: 0;
   color: white;
   font-weight: normal;
 `;

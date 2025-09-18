@@ -10,6 +10,7 @@ const Section = ({
   title,
   children,
   className,
+  subTitle,
   underline,
 }: SectionProps) => {
   return (
@@ -17,7 +18,10 @@ const Section = ({
       className={cx(css.section, className)}
       data-underline={underline || undefined}
     >
-      <h3 className={css.sectionTitle}>{title}</h3>
+      <div className={css.head}>
+        <h3 className={css.sectionTitle}>{title}</h3>
+        {subTitle && <div>{subTitle}</div>}
+      </div>
       <div
         className={cx({ [css.sectionHorizontal]: horizontal })}
         style={{ '--hGap': `${gap}px` } as CSSProperties}
